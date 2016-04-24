@@ -1,37 +1,38 @@
 package jstam.stamjessie_pset1;
 
-import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
-import javax.xml.transform.stream.StreamSource;
-
-/**
- * Created by Jessie on 24/04/2016.
+/*
+ * SecondActivity.java
+ * Madlibs
+ *
+ * By Jessie Stam
+ * 10560599
+ *
+ * Lets the user fill in words for the placeholders in the story. Replaces the placeholders for
+ * words from user. When all placeholders are filled, continues to ThirdActivity to print the
+ * story.
+ *
+ * This code unfortunately doesn't work yet. Due to trouble with the software and lack of
+ * understanding on my part, I wasn't able to debug this code in time. I hope that we can look
+ * through the code during office hours so that I can understand my mistakes. Thanks in advance.
  */
-public class SecondActivity extends MainActivity{
+
+public class SecondActivity extends MainActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_second);
-
-        // read story text? zorg dat dit random is
-        // getNextPlaceholder voor placeholder
-        // fillInPlaceholder om in te vullen
-        // check hoeveel placeholders er nog moeten
-        // toString method om verhaal te krijgen
-        // op de een of andere manier kun je om story vragen met extra intent shit
-        // je moet ook story en second en third activity nog toevoegen aan dat vage bestand zoals in het filmpje
 
         // define textfiles InputStreams
         InputStream madlib0 = getResources().openRawResource(R.raw.madlib0_simple);
@@ -42,11 +43,11 @@ public class SecondActivity extends MainActivity{
 
         Story storyName = new Story(madlib0);
 
-        // random int between 1 and 5
+        // get a random integer between 1 and 5
         Random randomStoryNum = new Random();
         int StoryNum = randomStoryNum.nextInt(5) + 1;
 
-        // define story at random
+        // define story at random using random integer
         if (StoryNum == 1) {
             storyName = new Story(madlib0);
             storyName.read(madlib0);
@@ -64,10 +65,7 @@ public class SecondActivity extends MainActivity{
             storyName.read(madlib4);
         }
 
-        // nu de story readen? Oke we gaan ervan uit dit ik dit nu heb gedaan yolo
-        // (construct is done) pass an input stream or Scanner to read the story text
-
-        // get amount of placeholders and print to screen
+        // get total amount of placeholders and print to screen
         Integer totalPlaceholders = storyName.getPlaceholderCount();
 
         TextView callingActivityMessage = (TextView)
@@ -75,66 +73,55 @@ public class SecondActivity extends MainActivity{
 
         callingActivityMessage.append(" " + totalPlaceholders);
 
-
         Button okButton = (Button) findViewById(R.id.wordConfirmButton);
 
+        // recognize when button is clicked
+        final Story finalStoryName = storyName;
         View.OnClickListener okButton = new View.OnClickListener() {
-            public void onClickAddWord(View v) {
+            public void onClick(View v) {
 
                 // get remaining placeholders and print to screen
-                Integer totalPlaceholders = storyName.getPlaceholderRemainingCount();
+                Integer remainingPlaceholders = finalStoryName.getPlaceholderRemainingCount();
 
                 TextView callingActivityMessage = (TextView)
                         findViewById(R.id.wordsLeftAmount);
 
-                callingActivityMessage.append(" " + totalPlaceholders);
+                callingActivityMessage.append(" " + remainingPlaceholders);
 
                 // get placeholder and print to screen as an instruction for the user
-                String placeholderWord = storyName.getNextPlaceholder();
+                String placeholderWord = finalStoryName.getNextPlaceholder();
 
                 TextView placeholderInstruction = (TextView)
                         findViewById(R.id.textToEnter);
 
                 placeholderInstruction.append(" " + placeholderWord);
 
-                // get placeholder and print to screen as an instruction for the user
-                String placeholderWord = storyName.getNextPlaceholder();
+                // get user input and store in string
+                EditText givenWord = (EditText) findViewById(R.id.wordInput);
+                String userInput = givenWord.getText().toString();
 
-                TextView placeholderInstruction = (TextView)
-                        findViewById(R.id.textToEnter);
+                // change placeholderWord to user input
+                String placeholderWord = finalStoryName.fillInPlaceholder(userInput);
 
-                placeholderInstruction.append(" " + placeholderWord);
+                Boolean filledIn = finalStoryName.isFilledIn();
 
+                // when everything is filled in, move on to third activity to print story
+                if (filledIn) {
+                    // create final story
+                    final String finalStory = finalStoryName.toString();
 
-                // oké, het opslaan van die fucking woorden
-
-                List userWords = new ArrayList();
-
-                String userInput = getText.toString(R.id.wordInput);
-
-                // verander placeholderWord in string
-                String placeholderWord = storyName.fillInPlaceholder(string word);
-
-                Boolean filledIn = storyName.isFilledIn();
-
-                if(filledIn) {
-                    // replace words with input?? nee, in third activity
-                    // open third activity
+                    // open third activity to display story
                     Intent printStory = new Intent(this, ThirdActivity.class);
 
-                    printStory.putExtra("userInputWords");
+                    printStory.putExtra("finalStory",finalStory);
 
-                    startActivityForResult(printStory, "wordInput");
+                    // start new activity with the story
+                    startActivity(printStory);
 
-
-
-
+                    // finish this activity
+                    finish();
                 }
-
+            }
         }
-
-
-
-
     }
 }

@@ -5,6 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+/*
+ * MainActivity.java
+  * Madlibs
+  *
+  * By Jessie Stam
+  * 10560599
+  *
+  * Instructs the user on how to use the application, then continues to SecondActivity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         Intent startApp = new Intent(this, SecondActivity.class);
         startActivity(startApp);
 
-
-
-        finish(); // ik weet nog niet zeker of dit hier moet
-
+        finish();
     }
 }

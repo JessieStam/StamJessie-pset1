@@ -7,4 +7,6 @@
     <string name="fillingInInstructions">Fill in the words to complete the story!</string>
     <string name="textToEnter">Please enter a/an</string>
     <string name="words_left">Words left:</string>
+    <string name="your_mad_libs_story">Your Mad Libs Story!</string>
+    <string name="story_text"></string>
 </resources>
