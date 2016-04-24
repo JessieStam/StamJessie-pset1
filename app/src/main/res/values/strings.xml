@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StamJessie-pset1.</string>
+    <string name="welcome_screen">Welcome to MadLibs! When asked, fill in the words to complete the
+        story. And all that without seeing the story before you\'re done! Ready? Click the button
+        below to get started!</string>
+    <string name="get_started_button">GET STARTED!</string>
+    <string name="fillingInInstructions">Fill in the words to complete the story!</string>
+    <string name="textToEnter">Please enter a/an</string>
+    <string name="words_left">Words left:</string>
+</resources>
